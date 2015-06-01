@@ -40,7 +40,7 @@ public class Barra_controle : MonoBehaviour {
 	// Velocidade de preenchimento da barra velocidade inicial = 0.02
 	private float velocidade;
 	// decide se a barra pode comecar a ser preenchida ou nao
-	private bool go;
+	private bool go = false;
 	// Limite da escala
 	private float limite = 1.5f;
 	// Carregar sprite da barra
@@ -54,7 +54,7 @@ public class Barra_controle : MonoBehaviour {
 		//escala inicia 0
 		escala = 0f;
 		//velocidade inicial
-		velocidade = 0.5f;
+		velocidade = 0.3f;
 		//limite inicial
 		//limite = 1.5f;
 		transform.localScale = new Vector2(0f,1.5f);
@@ -64,8 +64,6 @@ public class Barra_controle : MonoBehaviour {
 		barracheia = Resources.Load <Sprite> ("barra2cheia");
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		spriteRenderer.sprite = barra;
-
-		go = true;
 	}
 	
 	// Update is called once per frame
@@ -108,7 +106,7 @@ public class Barra_controle : MonoBehaviour {
 
 	public bool getGo(){return go;}
 
-	public void setGo(){go = !go;}
+	public void setGo(bool go){this.go = go;}
 
 	public void setLimite(float novoLimite) {limite = novoLimite;}
 }

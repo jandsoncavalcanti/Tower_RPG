@@ -18,35 +18,40 @@ public class Hero : MonoBehaviour {
 	private int numero_de_barras;       //
 	private GameObject[] barra;         //
 	private Barra_controle[] controle;  //Script correspondente as barras
-	private float limite_barras;
-	private float pos;
+	private float limite_barras;        //Limite de escala das barras - necessario para configurar tamanho e posicao
+	private float pos;                  //Posicao das barras
 
 	// Use this for initialization
 	void Start () {
 		this.animator = GetComponent<Animator>();
 		this.tela = (Camera)GameObject.Find ("Main Camera").GetComponent<Camera> ();
-		//this.barra = (Barra_controle)GameObject.Find ("barra").GetComponent<Barra_controle> ();
 		this.heavy = (BoxCollider2D)GameObject.Find ("heavy").GetComponent<BoxCollider2D> ();
 		this.attack = (BoxCollider2D)GameObject.Find ("light").GetComponent<BoxCollider2D> ();
 		this.defense = (BoxCollider2D)GameObject.Find ("defense").GetComponent<BoxCollider2D> ();
 		this.item = (BoxCollider2D)GameObject.Find ("item").GetComponent<BoxCollider2D> ();
 		this.numero_de_barras = 2;
-		this.limite_barras = 1.49f;
-		this.pos = 6.145f;
+		this.limite_barras = 1.5f - (float) ((numero_de_barras - 1)* 0.005);
+		this.pos = 6.15f;
 
 		barra = new GameObject[numero_de_barras];
 		controle = new Barra_controle[numero_de_barras];
-		barra[0] = (GameObject) Instantiate(Resources.Load("barra"), new Vector3(pos, -1.1f, 0), Quaternion.identity);
-		controle[0] = barra[0].GetComponent<Barra_controle>();
-		pos = (float) (2.47*(limite_barras/numero_de_barras)) + pos+0.005f;
-		barra[1] = (GameObject) Instantiate(Resources.Load("barra"), new Vector3(pos, -1.1f, 0), Quaternion.identity);
-		controle[1] = barra[1].GetComponent<Barra_controle>();
-		controle[0].setLimite(limite_barras/numero_de_barras);
-		controle[1].setLimite(limite_barras/numero_de_barras);
+
+		for (int counter = 0; counter < barra.Length; counter++)
+		{
+			barra[counter] = (GameObject) Instantiate(Resources.Load("barra"), new Vector3(pos, -1.1f, 0), Quaternion.identity);
+			controle[counter] = barra[counter].GetComponent<Barra_controle>();
+			pos = (float) (2.47*(limite_barras/numero_de_barras)) + pos+0.009f;
+
+			controle[counter].setLimite(limite_barras/numero_de_barras);
+			if (counter == 0){controle[counter].setGo(true);}
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		for (int counter = 1; counter < barra.Length; counter++)
+		{if (controle[counter-1].getEscala() == limite_barras/numero_de_barras){controle[counter].setGo(true);}}
+
 		if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance"))
 		{resetStatus();}
 		else
