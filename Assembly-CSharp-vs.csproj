@@ -49,9 +49,7 @@
      <Compile Include="Assets\Barra_controle.cs" />
      <Compile Include="Assets\Hero.cs" />
      <Compile Include="Assets\Touch.cs" />
-     <Compile Include="Assets\attack_button.cs" />
      <Compile Include="Assets\background_behaviour.cs" />
-     <Compile Include="Assets\barra.cs" />
      <Compile Include="Assets\slime.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity 5.0/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>

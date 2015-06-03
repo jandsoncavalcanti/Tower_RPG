@@ -92,7 +92,7 @@ public class Barra_controle : MonoBehaviour {
 
 	public void setEscala(float novaEscala)
 	{
-		escala += novaEscala;
+		escala = novaEscala;
 		if ( escala < limite ){spriteRenderer.sprite = barra;}
 	}
 

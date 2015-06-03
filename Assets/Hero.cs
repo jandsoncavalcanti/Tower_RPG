@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class Hero : MonoBehaviour {
@@ -20,6 +20,8 @@ public class Hero : MonoBehaviour {
 	private Barra_controle[] controle;  //Script correspondente as barras
 	private float limite_barras;        //Limite de escala das barras - necessario para configurar tamanho e posicao
 	private float pos;                  //Posicao das barras
+	private float atual, auxiliar;
+
 
 	// Use this for initialization
 	void Start () {
@@ -49,8 +51,14 @@ public class Hero : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		atual = 0;
 		for (int counter = 1; counter < barra.Length; counter++)
-		{if (controle[counter-1].getEscala() == limite_barras/numero_de_barras){controle[counter].setGo(true);}}
+		{
+			auxiliar = controle[counter - 1].getEscala();
+			atual += auxiliar;
+			if ( auxiliar == limite_barras/numero_de_barras){controle[counter].setGo(true);}
+		}
+		atual += controle[barra.Length - 1].getEscala();
 
 		if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance"))
 		{resetStatus();}
@@ -59,12 +67,44 @@ public class Hero : MonoBehaviour {
 			if ( Input.touchCount > 0)
 			{
 				ponto = tela.ScreenToWorldPoint(Input.GetTouch(Input.touches.Length -1).position);
-				/*
-				if (this.attack.OverlapPoint(ponto) && barra.getEscala() >= 1 && !animator.GetBool("light"))
-				{animator.SetBool("light", true);barra.setEscala(-1);}
-			else if (this.heavy.OverlapPoint(ponto)&& barra.getEscala() >= 2&& !animator.GetBool("heavy"))
-				{animator.SetBool("heavy", true);barra.setEscala(-2);}
-				*/
+
+				if (this.attack.OverlapPoint(ponto) 
+				    && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
+				    && atual >= limite_barras/numero_de_barras)
+				{
+					auxiliar = limite_barras/numero_de_barras;
+					for (int counter = barra.Length - 1; counter >= 0; counter-- )
+					{
+						auxiliar -= controle[counter].getEscala();
+						if ( auxiliar > 0){controle[counter].setEscala(0);}
+						else
+						{
+							controle[counter].setEscala((-1)*auxiliar);
+							auxiliar = 0;
+						}
+						if (counter > 0) {controle[counter].setGo(false);}
+					}
+					animator.SetBool("light", true);
+				}
+				else if (this.heavy.OverlapPoint(ponto)
+				     && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
+				     && atual >= 2*(limite_barras/numero_de_barras))
+				{
+					auxiliar = 2*(limite_barras/numero_de_barras);
+					for (int counter = barra.Length - 1; counter >= 0; counter-- )
+					{
+						auxiliar -= controle[counter].getEscala();
+						if ( auxiliar > 0){controle[counter].setEscala(0);}
+						else
+						{
+							controle[counter].setEscala((-1)*auxiliar);
+							auxiliar = 0;
+						}
+						if (counter > 0) {controle[counter].setGo(false);}
+					}
+					animator.SetBool("heavy", true);
+				}
+
 			}
 		}
 	}
