@@ -1,8 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Hero.cs">
     <Files>
-      <File FileName="Assets\Hero.cs" Line="1" Column="1" />
+      <File FileName="Assets\Hero.cs" Line="44" Column="11" />
       <File FileName="Assets\Barra_controle.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>

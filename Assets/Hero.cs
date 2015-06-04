@@ -20,7 +20,7 @@ public class Hero : MonoBehaviour {
 	private Barra_controle[] controle;  //Script correspondente as barras
 	private float limite_barras;        //Limite de escala das barras - necessario para configurar tamanho e posicao
 	private float pos;                  //Posicao das barras
-	private float atual, auxiliar;
+	private float atual, auxiliar, auxiliar2;
 
 
 	// Use this for initialization
@@ -72,15 +72,15 @@ public class Hero : MonoBehaviour {
 				    && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
 				    && atual >= limite_barras/numero_de_barras)
 				{
-					auxiliar = limite_barras/numero_de_barras;
+					auxiliar2 = limite_barras/numero_de_barras;
 					for (int counter = barra.Length - 1; counter >= 0; counter-- )
 					{
-						auxiliar -= controle[counter].getEscala();
-						if ( auxiliar > 0){controle[counter].setEscala(0);}
+						auxiliar2 = auxiliar2 - controle[counter].getEscala();
+						if ( auxiliar2 > 0){controle[counter].setEscala(0);}
 						else
 						{
-							controle[counter].setEscala((-1)*auxiliar);
-							auxiliar = 0;
+							controle[counter].setEscala(Mathf.Abs(auxiliar2));
+							auxiliar2 = 0;
 						}
 						if (counter > 0) {controle[counter].setGo(false);}
 					}
@@ -90,15 +90,15 @@ public class Hero : MonoBehaviour {
 				     && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
 				     && atual >= 2*(limite_barras/numero_de_barras))
 				{
-					auxiliar = 2*(limite_barras/numero_de_barras);
+					auxiliar2 = 2*(limite_barras/numero_de_barras);
 					for (int counter = barra.Length - 1; counter >= 0; counter-- )
 					{
-						auxiliar -= controle[counter].getEscala();
-						if ( auxiliar > 0){controle[counter].setEscala(0);}
+						auxiliar2 = auxiliar2 - controle[counter].getEscala();
+						if ( auxiliar2 > 0){controle[counter].setEscala(0);}
 						else
 						{
-							controle[counter].setEscala((-1)*auxiliar);
-							auxiliar = 0;
+							controle[counter].setEscala(Mathf.Abs(auxiliar2));
+							auxiliar2 = 0;
 						}
 						if (counter > 0) {controle[counter].setGo(false);}
 					}
