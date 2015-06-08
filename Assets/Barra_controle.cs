@@ -32,7 +32,7 @@ public class Barra_controle : MonoBehaviour {
 
 public class Barra_controle : MonoBehaviour {
 	// Usado para escalar a imagem no x, fazer efeito de surgir a barra
-	private float escala;
+	private float escala, escala_total;
 	// Auxiliar para nao precisar ficar fazendo comparacoes na logica da escala
 	private float aux;
 	// Posicao da barra para o personagem poder criar n barras que seguirao ele
@@ -49,10 +49,14 @@ public class Barra_controle : MonoBehaviour {
 	// Renderizar
 	private SpriteRenderer spriteRenderer;
 
+	private GameObject proxima_barra;
+	private Barra_controle proximo_controle;
+
 	// Use this for initialization
 	void Start () {
 		//escala inicia 0
 		escala = 0f;
+		escala_total = 0;
 		//velocidade inicial
 		velocidade = 0.3f;
 		//limite inicial
@@ -69,6 +73,7 @@ public class Barra_controle : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (go){doProgress();}
+		if (escala == limite && proxima_barra != null){proximo_controle.setGo(true);}
 	}
 
 	private void doProgress()
@@ -83,30 +88,77 @@ public class Barra_controle : MonoBehaviour {
 			spriteRenderer.sprite = barracheia;
 		}
 
-		transform.localScale = new Vector2(escala,1.5f);//
+		transform.localScale = new Vector2(escala,1.5f);
 		//compensa a posicao com metade do tamanho que pode ser pego no box colider
 		transform.position = new Vector2(posicao.x + (float)(escala*1.235f), posicao.y);
 	}
 
-	public float getEscala(){return escala;}
-
+	public float getEscala()
+	{
+		if (proximo_controle != null) {escala_total = proximo_controle.getEscala();}
+		return escala + escala_total;
+	}
+/*
 	public void setEscala(float novaEscala)
 	{
 		escala = novaEscala;
-		if ( escala < limite ){spriteRenderer.sprite = barra;}
+		if ( escala < limite )
+		{
+			spriteRenderer.sprite = barra;
+			if (proxima_barra != null){proximo_controle.setGo(false);}
+		}
 	}
-
-	public void setVelocidade(float novaVelocidade) {velocidade += novaVelocidade;}
-
-	public void setPosicao (float novo_x)
+*/
+	public void setVelocidade(float novaVelocidade)
 	{
-		posicao = new Vector2(novo_x, posicao.y);
-		transform.localScale = posicao;
+		velocidade = novaVelocidade;
+		if (proxima_barra != null){proximo_controle.setVelocidade(novaVelocidade);}
 	}
-
-	public bool getGo(){return go;}
 
 	public void setGo(bool go){this.go = go;}
 
 	public void setLimite(float novoLimite) {limite = novoLimite;}
+
+	public void novaBarra(int numero_barras, int atual, float x)
+	{
+		if (atual < numero_barras)
+		{
+			proxima_barra = (GameObject) Instantiate(Resources.Load("barra"), new Vector3(x, -1.1f, 0), Quaternion.identity);
+			proximo_controle = proxima_barra.GetComponent<Barra_controle>();
+			proximo_controle.setLimite(limite);
+			Debug.Log(proxima_barra.transform.position);
+			proximo_controle.novaBarra(numero_barras, atual + 1, (float)(2.47*limite) + proxima_barra.transform.position.x + 0.009f);
+		}
+	}
+
+	public void attack(float custo)
+	{
+		if (proximo_controle != null) {escala_total = proximo_controle.getEscala();}
+		float nova_escala = custo - escala - escala_total;
+		if (nova_escala <= 0){escala = 0;transform.localScale = new Vector2(escala,1.5f);}
+		else if (nova_escala >= limite){escala = limite;transform.localScale = new Vector2(escala,1.5f);}
+		else {escala = nova_escala;transform.localScale = new Vector2(escala,1.5f);}
+		if (proximo_controle != null){proximo_controle.attack(custo);}
+		/*
+		float novo_custo = custo;
+		if (proximo_controle != null)
+		{novo_custo = proximo_controle.attack(custo);}
+
+		if ( novo_custo - escala > 0)
+		{
+			escala = 0; transform.localScale = new Vector2(escala,1.5f);
+			spriteRenderer.sprite = barra;
+			if (escala == 0) {go = false;}
+			return novo_custo - escala;
+		}
+		else
+		{
+			escala = escala - novo_custo;
+			transform.localScale = new Vector2(escala,1.5f);
+			spriteRenderer.sprite = barra;
+			if (escala == 0) {go = false;}
+			return 0;
+		}
+		*/
+	}
 }

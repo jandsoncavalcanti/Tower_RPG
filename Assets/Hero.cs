@@ -16,12 +16,10 @@ public class Hero : MonoBehaviour {
 
 	                                    //Cria e controla as barras de ataque
 	private int numero_de_barras;       //
-	private GameObject[] barra;         //
-	private Barra_controle[] controle;  //Script correspondente as barras
 	private float limite_barras;        //Limite de escala das barras - necessario para configurar tamanho e posicao
-	private float pos;                  //Posicao das barras
-	private float atual, auxiliar, auxiliar2;
 
+	private GameObject barra;
+	private Barra_controle controle;
 
 	// Use this for initialization
 	void Start () {
@@ -33,33 +31,17 @@ public class Hero : MonoBehaviour {
 		this.item = (BoxCollider2D)GameObject.Find ("item").GetComponent<BoxCollider2D> ();
 		this.numero_de_barras = 2;
 		this.limite_barras = 1.5f - (float) ((numero_de_barras - 1)* 0.005);
-		this.pos = 6.15f;
 
-		barra = new GameObject[numero_de_barras];
-		controle = new Barra_controle[numero_de_barras];
-
-		for (int counter = 0; counter < barra.Length; counter++)
-		{
-			barra[counter] = (GameObject) Instantiate(Resources.Load("barra"), new Vector3(pos, -1.1f, 0), Quaternion.identity);
-			controle[counter] = barra[counter].GetComponent<Barra_controle>();
-			pos = (float) (2.47*(limite_barras/numero_de_barras)) + pos+0.009f;
-
-			controle[counter].setLimite(limite_barras/numero_de_barras);
-			if (counter == 0){controle[counter].setGo(true);}
-		}
+		barra = (GameObject) Instantiate(Resources.Load("barra"), new Vector3(6.15f, -1.1f, 0), Quaternion.identity);
+		controle = barra.GetComponent<Barra_controle>();
+		controle.setLimite(limite_barras/numero_de_barras);
+		Debug.Log(barra.transform.position);
+		controle.novaBarra(numero_de_barras,1, (float) (2.47*limite_barras/numero_de_barras) + 6.15f +0.009f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		atual = 0;
-		for (int counter = 1; counter < barra.Length; counter++)
-		{
-			auxiliar = controle[counter - 1].getEscala();
-			atual += auxiliar;
-			if ( auxiliar == limite_barras/numero_de_barras){controle[counter].setGo(true);}
-		}
-		atual += controle[barra.Length - 1].getEscala();
-
+		controle.setGo(true);
 		if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance"))
 		{resetStatus();}
 		else
@@ -70,38 +52,16 @@ public class Hero : MonoBehaviour {
 
 				if (this.attack.OverlapPoint(ponto) 
 				    && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
-				    && atual >= limite_barras/numero_de_barras)
+				    && controle.getEscala() >= limite_barras/numero_de_barras)
 				{
-					auxiliar2 = limite_barras/numero_de_barras;
-					for (int counter = barra.Length - 1; counter >= 0; counter-- )
-					{
-						auxiliar2 = auxiliar2 - controle[counter].getEscala();
-						if ( auxiliar2 > 0){controle[counter].setEscala(0);}
-						else
-						{
-							controle[counter].setEscala(Mathf.Abs(auxiliar2));
-							auxiliar2 = 0;
-						}
-						if (counter > 0) {controle[counter].setGo(false);}
-					}
+					controle.attack(limite_barras/numero_de_barras);
 					animator.SetBool("light", true);
 				}
 				else if (this.heavy.OverlapPoint(ponto)
 				     && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
-				     && atual >= 2*(limite_barras/numero_de_barras))
+					 && controle.getEscala() >= 2*(limite_barras/numero_de_barras))
 				{
-					auxiliar2 = 2*(limite_barras/numero_de_barras);
-					for (int counter = barra.Length - 1; counter >= 0; counter-- )
-					{
-						auxiliar2 = auxiliar2 - controle[counter].getEscala();
-						if ( auxiliar2 > 0){controle[counter].setEscala(0);}
-						else
-						{
-							controle[counter].setEscala(Mathf.Abs(auxiliar2));
-							auxiliar2 = 0;
-						}
-						if (counter > 0) {controle[counter].setGo(false);}
-					}
+					controle.attack(2*(limite_barras/numero_de_barras));
 					animator.SetBool("heavy", true);
 				}
 
