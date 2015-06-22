@@ -1,9 +1,9 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Barra_controle.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Hero.cs">
     <Files>
-      <File FileName="Assets\Barra_controle.cs" Line="137" Column="52" />
-      <File FileName="Assets\Hero.cs" Line="1" Column="1" />
+      <File FileName="Assets\Barra_controle.cs" Line="102" Column="51" />
+      <File FileName="Assets\Hero.cs" Line="73" Column="32" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
