@@ -98,7 +98,8 @@ public class Barra_controle : MonoBehaviour {
 
 	public void attack(float custo)
 	{
-		escala =- custo;
+		escala = escala - custo;
 		transform.localScale = new Vector2(escala,1.5f);
+		spriteRenderer.sprite = barra;
 	}
 }

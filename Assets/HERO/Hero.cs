@@ -53,16 +53,16 @@ public class Hero : MonoBehaviour {
 
 				if (this.attack.OverlapPoint(ponto) 
 				    && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
-				    && controle.getEscala() >= limite_barras/2)
+				    && controle.getEscala() >= 0.75)
 				{
-					controle.attack(limite_barras/2);
+					controle.attack(0.75f);
 					animator.SetBool("light", true);
 				}
 				else if (this.heavy.OverlapPoint(ponto)
 				     && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
-					 && controle.getEscala() == limite_barras)
+					 && controle.getEscala() == 1.5)
 				{
-					controle.attack(limite_barras);
+					controle.attack(1.5f);
 					animator.SetBool("heavy", true);
 				}
 				else if (this.item.OverlapPoint(ponto)
