@@ -21,10 +21,10 @@ public class Barra_controle : MonoBehaviour {
 	private SpriteRenderer spriteRenderer;
 
 	private Hero heroi;
-	private GameObject[] pedras;
-	private SpriteRenderer[] sprites_pedras;
+	public GameObject[] pedras;
+	public SpriteRenderer[] sprites_pedras;
 	private Vector2 posicao_pedras;
-	private int ultimo = 0;
+	//private int ultimo = 0;
 
 	// Use this for initialization
 	void Start () {
@@ -51,7 +51,7 @@ public class Barra_controle : MonoBehaviour {
 		else {
 			escala = 0;
 			go = false;
-			ultimo = pedras.Length;
+			//ultimo = pedras.Length;
 			for (int contador = 0; contador < pedras.Length; contador++) {
 				sprites_pedras[contador].enabled = true;
 			}
@@ -78,9 +78,10 @@ public class Barra_controle : MonoBehaviour {
 			posicao_pedras = new Vector2(posicao_pedras.x+0.85f,posicao_pedras.y);
 		}
 	}
-
+	/*
 	public void atacar(){
 		sprites_pedras [ultimo].enabled = false;
 		ultimo--;
 	}
+	*/
 }

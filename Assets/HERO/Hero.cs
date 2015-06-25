@@ -88,9 +88,9 @@ public class Hero : MonoBehaviour {
 		if (animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance") && barras_atuais > 1)
 		{
 			animator.SetBool("heavy", true);
+			barra.sprites_pedras[barras_atuais-1].enabled = false;
+			barra.sprites_pedras[barras_atuais-2].enabled = false;
 			barras_atuais = barras_atuais - 2;
-			barra.atacar();
-			barra.atacar();
 			if (barras_atuais == 0) {barra.setGo(true);}
 		}
 	}
@@ -99,8 +99,8 @@ public class Hero : MonoBehaviour {
 		if (animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance") && barras_atuais > 0)
 		{
 			animator.SetBool("light", true);
+			barra.sprites_pedras[barras_atuais-1].enabled = false;
 			barras_atuais = barras_atuais - 1;
-			barra.atacar();
 			if (barras_atuais == 0) {barra.setGo(true);}
 
 		}

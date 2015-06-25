@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\HERO\Barra_controle.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\HERO\Hero.cs">
     <Files>
-      <File FileName="Assets\HERO\Barra_controle.cs" Line="36" Column="17" />
-      <File FileName="Assets\HERO\Hero.cs" Line="47" Column="18" />
+      <File FileName="Assets\HERO\Hero.cs" Line="1" Column="1" />
+      <File FileName="Assets\HERO\Barra_controle.cs" Line="1" Column="1" />
       <File FileName="Assets\INIMIGOS\SLIME\Slime.cs" Line="1" Column="1" />
       <File FileName="Assets\INIMIGOS\attack skull\Caveira.cs" Line="1" Column="1" />
     </Files>
