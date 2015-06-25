@@ -48,6 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\HERO\Barra_controle.cs" />
      <Compile Include="Assets\HERO\Hero.cs" />
+     <Compile Include="Assets\INIMIGOS\Inimigo.cs" />
      <Compile Include="Assets\INIMIGOS\SLIME\Slime.cs" />
      <Compile Include="Assets\INIMIGOS\attack skull\Caveira.cs" />
      <Compile Include="Assets\Touch.cs" />

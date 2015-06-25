@@ -5,44 +5,47 @@ public class Hero : MonoBehaviour {
 
 	                                    //Controle dos touchs
 	private Camera tela;                //Para pegar os touchs
-	private Animator animator;          //Controle de animacao
 	private Vector2 ponto;              //Coordenada do ultimo touch
 
-										//Controle de itens do personagem
-	private int pots;					//numero de pocoes
+	private Animator animator;          //Controle de animacao
 
-	                                    //Pega o BoxCollider dos botoes
-	private BoxCollider2D attack;       //
-	private BoxCollider2D heavy;        //
-	private BoxCollider2D defense;      //
-	private BoxCollider2D item;         //
+	BoxCollider2D heavy, light;
 
-	                                    //Cria e controla as barras de ataque
-	private float limite_barras;        //Limite de escala das barras - necessario para configurar tamanho e posicao
+										//Controle dos inimigos
+	private GameObject[] inimigos;		
+	private Inimigo[] controles;
+	private BoxCollider2D[] selecionador;
+	private int selecionado = -1;
 
-	private GameObject barra;
-	private Barra_controle controle;
+	private Barra_controle barra;
+	private int barras_atuais = 0, barras_totais = 2;
 
 	// Use this for initialization
 	void Start () {
 		this.animator = GetComponent<Animator>();
 		this.tela = (Camera)GameObject.Find ("Main Camera").GetComponent<Camera> ();
-		this.heavy = (BoxCollider2D)GameObject.Find ("heavy").GetComponent<BoxCollider2D> ();
-		this.attack = (BoxCollider2D)GameObject.Find ("light").GetComponent<BoxCollider2D> ();
-		this.defense = (BoxCollider2D)GameObject.Find ("defense").GetComponent<BoxCollider2D> ();
-		this.item = (BoxCollider2D)GameObject.Find ("item").GetComponent<BoxCollider2D> ();
-		this.limite_barras = 1.5f;
 
-		pots = 5;
+		this.heavy = GameObject.Find ("heavy").GetComponent<BoxCollider2D> ();
+		this.light = GameObject.Find ("light").GetComponent<BoxCollider2D> ();
 
-		barra = (GameObject) Instantiate(Resources.Load("barra"), new Vector3(6.15f, -1.1f, 0), Quaternion.identity);
-		controle = barra.GetComponent<Barra_controle>();
-		controle.setLimite(limite_barras);
+		this.inimigos = GameObject.FindGameObjectsWithTag("Enemy");
+		this.controles = new Inimigo[inimigos.Length];
+		this.selecionador = new BoxCollider2D[inimigos.Length];
+
+		for (int contador = 0; contador < inimigos.Length; contador++) {
+			if (inimigos[contador].name.Contains("slime")) {controles[contador] = (Inimigo) inimigos[contador].GetComponent<Slime>();}
+
+			selecionador[contador] = inimigos[contador].GetComponent<BoxCollider2D>();
+		}
+
+		barra = (Barra_controle)GameObject.Find ("barra").GetComponent<Barra_controle> ();
+		barra.criar (barras_totais);
+		barra.setGo (true);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		controle.setGo(true);
+		Debug.Log (barra.name);
 		if (!animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance"))
 		{resetStatus();}
 		else
@@ -50,28 +53,17 @@ public class Hero : MonoBehaviour {
 			if ( Input.touchCount > 0)
 			{
 				ponto = tela.ScreenToWorldPoint(Input.GetTouch(Input.touches.Length -1).position);
+				if (heavy.OverlapPoint(ponto)) {Heavy();}
+				if (light.OverlapPoint(ponto)) {Light();}
 
-				if (this.attack.OverlapPoint(ponto) 
-				    && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
-				    && controle.getEscala() >= 0.75)
-				{
-					controle.attack(0.75f);
-					animator.SetBool("light", true);
-				}
-				else if (this.heavy.OverlapPoint(ponto)
-				     && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
-					 && controle.getEscala() == 1.5)
-				{
-					controle.attack(1.5f);
-					animator.SetBool("heavy", true);
-				}
-				else if (this.item.OverlapPoint(ponto)
-				         && animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance")
-						 && pots > 0)
-				{
-					pots =- 1;
-					animator.SetBool("use item", true);
-				}
+				for (int contador = 0; contador < inimigos.Length; contador++) {
+					if (this.selecionador[contador].OverlapPoint(ponto) && contador != selecionado)
+					{
+						if (selecionado >= 0) {controles[selecionado].foi_deselecionado();}
+						selecionado = contador;
+						controles[contador].foi_selecionado();
+					}
+				} 
 			}
 		}
 	}
@@ -86,5 +78,31 @@ public class Hero : MonoBehaviour {
 		{animator.SetBool("use item", false);}
 		else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Hurt"))
 		{animator.SetBool("hurt", false);}
+	}
+
+	public int getTotal() {return barras_totais;}
+
+	public void setBarras() {barras_atuais = barras_totais;}
+
+	public void Heavy(){
+		if (animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance") && barras_atuais > 1)
+		{
+			animator.SetBool("heavy", true);
+			barras_atuais = barras_atuais - 2;
+			barra.atacar();
+			barra.atacar();
+			if (barras_atuais == 0) {barra.setGo(true);}
+		}
+	}
+
+	public void Light(){
+		if (animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance") && barras_atuais > 0)
+		{
+			animator.SetBool("light", true);
+			barras_atuais = barras_atuais - 1;
+			barra.atacar();
+			if (barras_atuais == 0) {barra.setGo(true);}
+
+		}
 	}
 }
