@@ -6,6 +6,8 @@ public class Caveira : MonoBehaviour {
 	private float limite;
 	private float relogio;
 
+	private Inimigo dono;
+
 	// Use this for initialization
 	void Start () {
 		this.animador = GetComponent<Animator>();
@@ -23,12 +25,13 @@ public class Caveira : MonoBehaviour {
 			animador.SetBool ("ataca", true);
 			animador.SetBool ("prepara", false);
 			relogio = 0;
+			this.dono.ataca();
 		}
 	}
+
+	public void cria(Inimigo dono) {this.dono = dono;}
 
 	public void setLimite(float tempo) {limite = tempo;}
 
 	public void atacar() {animador.SetBool("prepara", true);}
-
-	public bool getAtaca(){return animador.GetBool ("ataca");}
 }

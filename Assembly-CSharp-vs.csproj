@@ -48,9 +48,14 @@
   <ItemGroup>
      <Compile Include="Assets\HERO\Barra_controle.cs" />
      <Compile Include="Assets\HERO\Hero.cs" />
+     <Compile Include="Assets\HPSlimeInterface.cs" />
+     <Compile Include="Assets\HPheroiInterface.cs" />
+     <Compile Include="Assets\HeroiHP.cs" />
      <Compile Include="Assets\INIMIGOS\Inimigo.cs" />
      <Compile Include="Assets\INIMIGOS\SLIME\Slime.cs" />
      <Compile Include="Assets\INIMIGOS\attack skull\Caveira.cs" />
+     <Compile Include="Assets\InimigoHP.cs" />
+     <Compile Include="Assets\Menu.cs" />
      <Compile Include="Assets\Touch.cs" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
