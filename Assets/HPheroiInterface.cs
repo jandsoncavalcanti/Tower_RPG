@@ -34,9 +34,11 @@ public class HPheroiInterface : MonoBehaviour {
 					dano = dano - vida_script [indice].atual;
 					vida_script [indice].atual = 0;
 					vida_script [indice].atualizaSprite ();
-					indice--;
-					if (indice < 0) {
+
+					if (indice - 1 < 0) {
 						return true;
+					} else {
+						indice--;
 					}
 				} else {
 					vida_script [indice].atual = vida_script [indice].atual - dano;
@@ -48,4 +50,23 @@ public class HPheroiInterface : MonoBehaviour {
 		}
 		return true;
 	}
+
+	public void recupera_HP (int recuperacao){
+		if (indice < vida_script.Length) {
+			for (int contador = indice; contador < vida_script.Length; contador++) {
+				if (recuperacao + vida_script [indice].atual >= vida_script [indice].total) {
+					recuperacao = recuperacao - (vida_script [indice].total - vida_script [indice].atual);
+					vida_script [indice].atual = vida_script [indice].total;
+					vida_script [indice].atualizaSprite ();
+
+					if (indice + 1 < vida_script.Length) {
+						indice++;
+					}
+				} else {
+					vida_script [indice].atual = vida_script [indice].atual + recuperacao;
+					vida_script [indice].atualizaSprite ();
+				}
+			}
+		}
+	}	
 }

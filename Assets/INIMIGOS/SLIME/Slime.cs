@@ -86,4 +86,13 @@ public class Slime : MonoBehaviour, Inimigo {
 	{Destroy(this.selecionado);}
 
 	public bool getAtivo() {return ativo;}
+
+	public void foi_defendido() {
+		controle.foi_defendido ();
+	}
+
+	public void ataque_defendido(){
+		animador.SetBool ("atack", true);
+		heroi.ataque_defendido ();
+	}
 }

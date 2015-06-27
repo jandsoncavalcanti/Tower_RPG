@@ -8,7 +8,7 @@ public class Menu : MonoBehaviour {
 	private Vector2 ponto;              //Coordenada do ultimo touch
 
 	private Hero heroi;
-	private BoxCollider2D heavy, light_atack, item;
+	private BoxCollider2D heavy, light_atack, item, defense, sair;
 
 	//Controle dos inimigos
 	private GameObject[] inimigos;		
@@ -16,6 +16,8 @@ public class Menu : MonoBehaviour {
 	private BoxCollider2D[] selecionador;
 	public int selecionado = -1;
 	private Vector2 HP_inimigo_pos;
+
+	private bool ativo = false;
 
 	// Use this for initialization
 	void Start () {
@@ -26,7 +28,8 @@ public class Menu : MonoBehaviour {
 		this.heavy = GameObject.Find ("heavy").GetComponent<BoxCollider2D> ();
 		this.light_atack = GameObject.Find ("light").GetComponent<BoxCollider2D> ();
 		this.item = GameObject.Find ("item").GetComponent<BoxCollider2D> ();
-		
+		this.defense = GameObject.Find ("defense").GetComponent<BoxCollider2D> ();
+		this.sair = GameObject.Find ("barra2cheia").GetComponent<BoxCollider2D> ();
 		
 		this.inimigos = GameObject.FindGameObjectsWithTag("Enemy");
 		this.controles = new Inimigo[inimigos.Length];
@@ -43,24 +46,40 @@ public class Menu : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if ( Input.touchCount > 0)
-		{
-			ponto = tela.ScreenToWorldPoint(Input.GetTouch(Input.touches.Length -1).position);
-			if (heavy.OverlapPoint(ponto) && selecionado > -1) {heroi.Heavy();}
-			if (light_atack.OverlapPoint(ponto) && selecionado > -1) {heroi.Light();}
-			if (item.OverlapPoint(ponto)) {heroi.Item();}
+		if (Input.touchCount > 0) {
+			ponto = tela.ScreenToWorldPoint (Input.GetTouch (Input.touches.Length - 1).position);
+			if (heavy.OverlapPoint (ponto) && selecionado > -1) {
+				heroi.Heavy ();
+			}
+			if (light_atack.OverlapPoint (ponto) && selecionado > -1) {
+				heroi.Light ();
+			}
+			if (item.OverlapPoint (ponto)) {
+				heroi.Item ();
+			}
+			if (defense.OverlapPoint (ponto) && !ativo) {
+				ativo = true;
+				heroi.Defender ();
+			}
+			if (sair.OverlapPoint(ponto)){
+				Application.Quit();
+			}
 			
 			for (int contador = 0; contador < inimigos.Length; contador++) {
-				if (this.selecionador[contador].OverlapPoint(ponto) && contador != selecionado)
-				{
-					if (selecionado >= 0 && controles[contador].getAtivo()) {controles[selecionado].foi_deselecionado();}
+				if (this.selecionador [contador].OverlapPoint (ponto) && contador != selecionado) {
+					if (selecionado >= 0 && controles [contador].getAtivo ()) {
+						controles [selecionado].foi_deselecionado ();
+					}
 
-					if (controles[contador].foi_selecionado()) {
-						heroi.pega_algo(controles[contador]);
+					if (controles [contador].foi_selecionado ()) {
+						heroi.pega_algo (controles [contador]);
 						selecionado = contador;
 					}
 				}
-			} 
+			}
+			Input.ResetInputAxes ();
+		} else {
+			ativo = false;
 		}
 	}
 }

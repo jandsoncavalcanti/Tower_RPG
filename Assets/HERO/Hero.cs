@@ -27,18 +27,20 @@ public class Hero : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (animator.GetCurrentAnimatorStateInfo(0).IsName("attack"))
-		{animator.SetBool("light", false);}
-		else if (animator.GetCurrentAnimatorStateInfo(0).IsName("heavy attack"))
-		{animator.SetBool("heavy", false);}
-		else if (animator.GetCurrentAnimatorStateInfo(0).IsName("use item"))
-		{animator.SetBool("use item", false);}
-		else if (animator.GetCurrentAnimatorStateInfo(0).IsName("Hurt"))
-		{
-			animator.SetBool("hurt", false);
-			animator.SetBool("light", false);
-			animator.SetBool("heavy", false);
-			animator.SetBool("use item", false);
+		if (animator.GetCurrentAnimatorStateInfo (0).IsName ("attack")) {
+			animator.SetBool ("light", false);
+		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName ("heavy attack")) {
+			animator.SetBool ("heavy", false);
+		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName ("use item")) {
+			animator.SetBool ("use item", false);
+		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName ("defense")) {
+			animator.SetBool ("defense", false);
+		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName ("Hurt")) {
+			animator.SetBool ("hurt", false);
+			animator.SetBool ("light", false);
+			animator.SetBool ("heavy", false);
+			animator.SetBool ("use item", false);
+			animator.SetBool ("defense", false);
 		}
 	}
 
@@ -71,6 +73,16 @@ public class Hero : MonoBehaviour {
 		if (animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance") && barras_atuais > 0 && !animator.GetBool("use item"))
 		{
 			animator.SetBool("use item", true);
+			health_points.recupera_HP(2);
+			barra.sprites_pedras[barras_atuais-1].enabled = false;
+			barras_atuais = barras_atuais - 1;
+			if (barras_atuais == 0) {barra.setGo(true);}
+		}
+	}
+
+	public void Defender() {
+		if (animator.GetCurrentAnimatorStateInfo (0).IsName ("Battle Stance") && barras_atuais > 0) {
+			alvo.foi_defendido();
 			barra.sprites_pedras[barras_atuais-1].enabled = false;
 			barras_atuais = barras_atuais - 1;
 			if (barras_atuais == 0) {barra.setGo(true);}
@@ -85,4 +97,6 @@ public class Hero : MonoBehaviour {
 	}
 
 	public void pega_algo(Inimigo alvo) {this.alvo = alvo;}
+
+	public void ataque_defendido() {animator.SetBool ("defense", true);}
 }

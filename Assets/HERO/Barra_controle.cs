@@ -51,7 +51,6 @@ public class Barra_controle : MonoBehaviour {
 		else {
 			escala = 0;
 			go = false;
-			//ultimo = pedras.Length;
 			for (int contador = 0; contador < pedras.Length; contador++) {
 				sprites_pedras[contador].enabled = true;
 			}
@@ -78,10 +77,4 @@ public class Barra_controle : MonoBehaviour {
 			posicao_pedras = new Vector2(posicao_pedras.x+0.85f,posicao_pedras.y);
 		}
 	}
-	/*
-	public void atacar(){
-		sprites_pedras [ultimo].enabled = false;
-		ultimo--;
-	}
-	*/
 }

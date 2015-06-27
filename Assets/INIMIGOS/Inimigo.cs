@@ -9,4 +9,6 @@ public interface Inimigo
 	void ataca();
 	void criar_HP_interface(Vector2 posicao);
 	bool getAtivo();
+	void foi_defendido();
+	void ataque_defendido();
 }
