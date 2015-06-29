@@ -11,4 +11,5 @@ public interface Inimigo
 	bool getAtivo();
 	void foi_defendido();
 	void ataque_defendido();
+	bool pode_atacar();
 }

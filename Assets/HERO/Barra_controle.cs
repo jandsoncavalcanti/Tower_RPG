@@ -21,16 +21,15 @@ public class Barra_controle : MonoBehaviour {
 	private SpriteRenderer spriteRenderer;
 
 	private Hero heroi;
-	public GameObject[] pedras;
+	private GameObject[] pedras;
 	public SpriteRenderer[] sprites_pedras;
 	private Vector2 posicao_pedras;
-	//private int ultimo = 0;
 
 	// Use this for initialization
 	void Start () {
 		transform.localScale = new Vector2(0f,1.5f);
 		posicao = new Vector2(transform.position.x,transform.position.y);
-		barra = Resources.Load <Sprite> ("barra2");
+		barra = Resources.Load <Sprite> ("barra");
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		spriteRenderer.sprite = barra;
 		heroi = (Hero) GameObject.Find("Hero").GetComponent<Hero>();
@@ -69,12 +68,12 @@ public class Barra_controle : MonoBehaviour {
 	public void criar(int total){
 		pedras = new GameObject[total];
 		sprites_pedras = new SpriteRenderer[total];
-		posicao_pedras = new Vector2 (6.57f,-1.11f);
+		posicao_pedras = new Vector2 (6.57f, -1.11f);
 		for (int contador = 0; contador < pedras.Length; contador++) {
-			pedras[contador] = (GameObject) Instantiate(Resources.Load("attack stone"), posicao_pedras, Quaternion.identity);
-			sprites_pedras[contador] = pedras[contador].GetComponent<SpriteRenderer>();
-			sprites_pedras[contador].enabled = false;
-			posicao_pedras = new Vector2(posicao_pedras.x+0.85f,posicao_pedras.y);
+			pedras [contador] = (GameObject)Instantiate (Resources.Load ("attack stone"), posicao_pedras, Quaternion.identity);
+			sprites_pedras [contador] = pedras [contador].GetComponent<SpriteRenderer> ();
+			sprites_pedras [contador].enabled = false;
+			posicao_pedras = new Vector2 (posicao_pedras.x + 0.85f, posicao_pedras.y);
 		}
 	}
 }

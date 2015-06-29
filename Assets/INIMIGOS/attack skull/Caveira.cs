@@ -17,20 +17,20 @@ public class Caveira : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (animador.GetCurrentAnimatorStateInfo (0).IsName ("idle")) {
+		if (animador.GetCurrentAnimatorStateInfo (0).IsName ("parado")) {
 			animador.SetBool ("ataca", false);
 			defendeu = false;
 		} else if (animador.GetCurrentAnimatorStateInfo (0).IsName ("ataca") && relogio < limite) {
 			relogio += (float)Time.deltaTime;
 		}
-		else if (animador.GetCurrentAnimatorStateInfo (0).IsName ("ataca") && relogio >= limite) {
+		else if (animador.GetCurrentAnimatorStateInfo (0).IsName ("ataca") && relogio >= limite && dono.pode_atacar()) {
 			animador.SetBool ("ataca", true);
 			animador.SetBool ("prepara", false);
 			relogio = 0;
 			if (defendeu) {
-				this.dono.ataque_defendido();
+				dono.ataque_defendido();
 			} else {
-				this.dono.ataca();
+				dono.ataca();
 			}
 		}
 	}

@@ -29,7 +29,7 @@ public class Menu : MonoBehaviour {
 		this.light_atack = GameObject.Find ("light").GetComponent<BoxCollider2D> ();
 		this.item = GameObject.Find ("item").GetComponent<BoxCollider2D> ();
 		this.defense = GameObject.Find ("defense").GetComponent<BoxCollider2D> ();
-		this.sair = GameObject.Find ("barra2cheia").GetComponent<BoxCollider2D> ();
+		this.sair = GameObject.Find ("sair").GetComponent<BoxCollider2D> ();
 		
 		this.inimigos = GameObject.FindGameObjectsWithTag("Enemy");
 		this.controles = new Inimigo[inimigos.Length];

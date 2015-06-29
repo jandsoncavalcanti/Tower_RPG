@@ -59,7 +59,20 @@ public class Slime : MonoBehaviour, Inimigo {
 
 	public void ataca(){
 		animador.SetBool ("atack", true);
-		heroi.recebe_dano(1);
+		heroi.recebe_dano (1);
+	}
+
+	public void ataque_defendido(){
+		animador.SetBool ("atack", true);
+		heroi.ataque_defendido ();
+	}
+
+	public bool pode_atacar() {
+		if (animador.GetCurrentAnimatorStateInfo (0).IsName ("slime idle")) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public void recebe_dano(int dano)
@@ -89,10 +102,5 @@ public class Slime : MonoBehaviour, Inimigo {
 
 	public void foi_defendido() {
 		controle.foi_defendido ();
-	}
-
-	public void ataque_defendido(){
-		animador.SetBool ("atack", true);
-		heroi.ataque_defendido ();
 	}
 }
