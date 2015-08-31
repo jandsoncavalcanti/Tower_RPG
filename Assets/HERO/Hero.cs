@@ -5,87 +5,93 @@ public class Hero : MonoBehaviour {
 
 
 	private Animator animator;          //Controle de animacao
+	private LightAttackBehaviour LightAttack;
+	private HeavyAttackBehaviour HeavyAttack;
+	private HurtBehaviour Hurt;
+	private DefenseBehaviour Defense;
+	private ItemBehaviour UseItem;
 
 	private HPheroiInterface health_points;
-	private int numero_vidas = 4;
+	private int numeroVidas = 4;
 
 	private Barra_controle barra;
 	private int barras_atuais = 0, barras_totais = 2;
 
-	private Inimigo alvo;
+	private InimigoBehaviour alvo;
 
 	// Use this for initialization
 	void Start () {
-		this.animator = GetComponent<Animator>();
+		this.animator = this.GetComponent<Animator>();
+		this.LightAttack = this.animator.GetBehaviour<LightAttackBehaviour>();
+		this.LightAttack.heroi = this;
+		this.HeavyAttack = this.animator.GetBehaviour<HeavyAttackBehaviour>();
+		this.HeavyAttack.heroi = this;
+		this.Hurt = this.animator.GetBehaviour<HurtBehaviour>();
+		this.Hurt.heroi = this;
+		this.Defense = this.animator.GetBehaviour<DefenseBehaviour>();
+		this.Defense.heroi = this;
+		this.UseItem = this.animator.GetBehaviour<ItemBehaviour>();
+		this.UseItem.heroi = this;
 
-		this.health_points = (HPheroiInterface) GameObject.Find ("menu life heroi").GetComponent<HPheroiInterface> ();
-		this.health_points.cria (numero_vidas);
-		this.barra = (Barra_controle)GameObject.Find ("barra").GetComponent<Barra_controle> ();
-		this.barra.criar (barras_totais);
+		this.health_points = GameObject.Find ("menu life heroi").GetComponent<HPheroiInterface> ();
+		this.health_points.cria (this.numeroVidas);
+		this.barra = GameObject.Find ("barra").GetComponent<Barra_controle> ();
+		this.barra.criar (this.barras_totais);
 		this.barra.setGo (true);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (animator.GetCurrentAnimatorStateInfo (0).IsName ("attack")) {
-			animator.SetBool ("light", false);
-		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName ("heavy attack")) {
-			animator.SetBool ("heavy", false);
-		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName ("use item")) {
-			animator.SetBool ("use item", false);
-		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName ("defense")) {
-			animator.SetBool ("defense", false);
-		} else if (animator.GetCurrentAnimatorStateInfo (0).IsName ("Hurt")) {
-			animator.SetBool ("hurt", false);
-			animator.SetBool ("light", false);
-			animator.SetBool ("heavy", false);
-			animator.SetBool ("use item", false);
-			animator.SetBool ("defense", false);
-		}
 	}
 
 	public void setBarras() {barras_atuais = barras_totais;}
 
-	public void Heavy(){
-		if (animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance") && barras_atuais > 1 && !animator.GetBool("heavy"))
-		{
-			animator.SetBool("heavy", true);
-			barra.sprites_pedras[barras_atuais-1].enabled = false;
-			barra.sprites_pedras[barras_atuais-2].enabled = false;
-			barras_atuais = barras_atuais - 2;
-			alvo.recebe_dano(2);
-			if (barras_atuais == 0) {barra.setGo(true);}
-		}
+	public void setSpriteBarras() {
+		barra.sprites_pedras[barras_atuais-1].enabled = false;
+		barras_atuais--;
+		if (barras_atuais == 0) {barra.setGo(true);}
+	}
+
+	public void ataque(int vezes) {
+		alvo.recebe_dano (vezes);
 	}
 
 	public void Light(){
-		if (animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance") && barras_atuais > 0 && !animator.GetBool("light"))
-		{
-			animator.SetBool("light", true);
-			barra.sprites_pedras[barras_atuais-1].enabled = false;
-			barras_atuais = barras_atuais - 1;
-			alvo.recebe_dano(1);
-			if (barras_atuais == 0) {barra.setGo(true);}
+		if (barras_atuais > 0) {
+			animator.SetBool ("light", true);
+		}
+	}
+
+	public void resetAllButNoDamage() {
+		animator.SetBool ("light", false);
+		animator.SetBool("heavy", false);
+		animator.SetBool ("use item", false);
+	}
+
+	public void resetHurt() {
+		animator.SetBool ("hurt", false);
+	}
+
+	public void resetDefense() {
+		animator.SetBool ("defense", false);
+	}
+	
+	public void Heavy(){
+		if ( barras_atuais > 1) {
+			animator.SetBool("heavy", true);
 		}
 	}
 
 	public void Item(){
-		if (animator.GetCurrentAnimatorStateInfo(0).IsName("Battle Stance") && barras_atuais > 0 && !animator.GetBool("use item"))
-		{
+		if ( barras_atuais > 0) {
 			animator.SetBool("use item", true);
-			health_points.recupera_HP(2);
-			barra.sprites_pedras[barras_atuais-1].enabled = false;
-			barras_atuais = barras_atuais - 1;
-			if (barras_atuais == 0) {barra.setGo(true);}
 		}
 	}
 
 	public void Defender() {
-		if (animator.GetCurrentAnimatorStateInfo (0).IsName ("Battle Stance") && barras_atuais > 0) {
+		if ((animator.GetCurrentAnimatorStateInfo (0).IsName ("Battle Stance") || animator.GetCurrentAnimatorStateInfo (0).IsName ("Hurt")) && barras_atuais > 0) {
 			alvo.foi_defendido();
-			barra.sprites_pedras[barras_atuais-1].enabled = false;
-			barras_atuais = barras_atuais - 1;
-			if (barras_atuais == 0) {barra.setGo(true);}
+			setSpriteBarras();
 		}
 	}
 
@@ -95,8 +101,11 @@ public class Hero : MonoBehaviour {
 			animator.SetBool ("dead", true);
 		}
 	}
+	public void recuperaHp(int vezes) {
+		health_points.recupera_HP(vezes);
+	}
 
-	public void pega_algo(Inimigo alvo) {this.alvo = alvo;}
+	public void pega_alvo(InimigoBehaviour alvo) {this.alvo = alvo;}
 
 	public void ataque_defendido() {animator.SetBool ("defense", true);}
 }

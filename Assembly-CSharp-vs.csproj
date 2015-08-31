@@ -47,13 +47,22 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\HERO\Barra_controle.cs" />
+     <Compile Include="Assets\HERO\DefenseBehaviour.cs" />
      <Compile Include="Assets\HERO\HPheroiInterface.cs" />
+     <Compile Include="Assets\HERO\HeavyAttackBehaviour.cs" />
      <Compile Include="Assets\HERO\Hero.cs" />
      <Compile Include="Assets\HERO\HeroiHP.cs" />
+     <Compile Include="Assets\HERO\HurtBehaviour.cs" />
+     <Compile Include="Assets\HERO\ItemBehaviour.cs" />
+     <Compile Include="Assets\HERO\LightAttackBehaviour.cs" />
+     <Compile Include="Assets\INIMIGOS\AttackBehaviour.cs" />
+     <Compile Include="Assets\INIMIGOS\HitBehaviour.cs" />
      <Compile Include="Assets\INIMIGOS\Inimigo.cs" />
+     <Compile Include="Assets\INIMIGOS\InimigoBehaviour.cs" />
      <Compile Include="Assets\INIMIGOS\InimigoHP.cs" />
-     <Compile Include="Assets\INIMIGOS\SLIME\HPSlimeInterface.cs" />
+     <Compile Include="Assets\INIMIGOS\InimigoHPInterface.cs" />
      <Compile Include="Assets\INIMIGOS\SLIME\Slime.cs" />
+     <Compile Include="Assets\INIMIGOS\StoppedSkullBehaviour.cs" />
      <Compile Include="Assets\INIMIGOS\attack skull\Caveira.cs" />
      <Compile Include="Assets\Menu.cs" />
  <Reference Include="UnityEngine.UI">

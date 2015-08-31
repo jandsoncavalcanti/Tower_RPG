@@ -3,13 +3,16 @@ using System.Collections;
 
 public interface Inimigo
 {
-	void recebe_dano(int dano);
-	bool foi_selecionado();
-	void foi_deselecionado();
-	void ataca();
-	void criar_HP_interface(Vector2 posicao);
+	void send_skull();
+	void damage();
+	void resetAttack();
+	void resetHit();
 	bool getAtivo();
-	void foi_defendido();
-	void ataque_defendido();
-	bool pode_atacar();
+	bool seleciona();
+	void deseleciona();
+	void criar_HP_interface(Vector2 posicao);
+	InimigoBehaviour getBehaviour();
+	float getLimiteRelogio();
+	float getCaveiraIntervalo ();
+	int getNumeroVidas ();
 }

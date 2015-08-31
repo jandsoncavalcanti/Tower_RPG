@@ -27,46 +27,43 @@ public class HPheroiInterface : MonoBehaviour {
 		}
 	}
 
-	public bool recebe_dano(int dano){
-		if (indice >= 0) {
-			for (int contador = indice; contador >= 0; contador--) {
-				if (dano >= vida_script [indice].atual) {
-					dano = dano - vida_script [indice].atual;
-					vida_script [indice].atual = 0;
+	public bool recebe_dano(int vezes){
+		for (int counter = 1; counter <= vezes; counter++) {
+			if (indice >= 0)	{
+				if (vida_script [indice].atual > 0) {
+					vida_script [indice].atual --;
 					vida_script [indice].atualizaSprite ();
-
-					if (indice - 1 < 0) {
-						return true;
-					} else {
-						indice--;
-					}
 				} else {
-					vida_script [indice].atual = vida_script [indice].atual - dano;
-					dano = 0;
-					vida_script [indice].atualizaSprite ();
+					counter --;
+				}
+				if (vida_script [indice].atual <= 0) {
+					vida_script [indice].atual = 0;
+					indice --;
+				}
+				if (indice < 0) {
+					return true;
 				}
 			}
-			return false;
+			else {
+				return true;
+			}
 		}
-		return true;
+		return false;
 	}
 
-	public void recupera_HP (int recuperacao){
-		if (indice < vida_script.Length) {
-			for (int contador = indice; contador < vida_script.Length; contador++) {
-				if (recuperacao + vida_script [indice].atual >= vida_script [indice].total) {
-					recuperacao = recuperacao - (vida_script [indice].total - vida_script [indice].atual);
-					vida_script [indice].atual = vida_script [indice].total;
+	public void recupera_HP (int recuperacao) {
+		for (int counter = 1; counter <= recuperacao; counter++) {
+			if (indice < vida_script.Length) {
+				if (vida_script [indice].atual == vida_script [indice].total && indice + 1 < vida_script.Length) {
+					indice ++;
+				}
+				if (vida_script [indice].atual < vida_script [indice].total) {
+					vida_script [indice].atual ++;
 					vida_script [indice].atualizaSprite ();
-
-					if (indice + 1 < vida_script.Length) {
-						indice++;
-					}
-				} else {
-					vida_script [indice].atual = vida_script [indice].atual + recuperacao;
-					vida_script [indice].atualizaSprite ();
+				} else if (indice + 1 < vida_script.Length) {
+					counter --;
 				}
 			}
 		}
-	}	
+	}
 }

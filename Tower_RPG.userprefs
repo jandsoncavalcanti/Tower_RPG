@@ -1,9 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\INIMIGOS\SLIME\Slime.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\HERO\Hero.cs">
     <Files>
-      <File FileName="Assets\INIMIGOS\SLIME\Slime.cs" Line="30" Column="16" />
-      <File FileName="Assets\INIMIGOS\InimigoHP.cs" Line="1" Column="1" />
+      <File FileName="Assets\INIMIGOS\SLIME\Slime.cs" Line="63" Column="2" />
+      <File FileName="Assets\INIMIGOS\InimigoHPInterface.cs" Line="4" Column="32" />
+      <File FileName="Assets\HERO\Barra_controle.cs" Line="1" Column="1" />
+      <File FileName="Assets\HERO\Hero.cs" Line="50" Column="3" />
+      <File FileName="Assets\HERO\HeroiHP.cs" Line="1" Column="1" />
+      <File FileName="Assets\HERO\HPheroiInterface.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
